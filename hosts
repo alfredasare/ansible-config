@@ -1,7 +1,7 @@
-[droplet]
+[webserver]
 64.226.107.81
 159.223.26.73
 
-[droplet:vars]
+[webserver:vars]
 ansible_ssh_private_key_file=~/.ssh/devops-droplet
 ansible_user=root
