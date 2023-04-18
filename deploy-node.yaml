@@ -12,28 +12,32 @@
 
 - name: Create new linux user for node app
   hosts: 64.226.107.81
+  vars_files:
+    - project-vars
   tasks:
     - name: Create linux user
       ansible.builtin.user:
-        name: alfred
+        name: "{{linux_name}}"
         comment: Node User
         group: admin
 
 - name: Deploy nodejs app
   hosts: 64.226.107.81
   become: True
-  become_user: alfred
+  become_user: "{{linux_name}}"
+  vars_files:
+    - project-vars
   tasks:
     - name: Unpack the nodejs file
       ansible.builtin.unarchive:
-        src: /Users/alfredamoah/IdeaProjects/simple-nodejs/nodejs-app-1.0.0.tgz
-        dest: /home/alfred
+        src: "{{location}}/nodejs-app-{{version}}.tgz"
+        dest: "{{user_home_dir}}"
     - name: Install dependencies
       community.general.npm:
-        path: /home/alfred/package
+        path: "{{user_home_dir}}/package"
     - name: Start the application
       ansible.builtin.command:
-        chdir: /home/alfred/package/app
+        chdir: "{{user_home_dir}}/package/app"
         cmd: node server
       async: 1000
       poll: 0
