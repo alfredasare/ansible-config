@@ -10,19 +10,30 @@
           - nodejs
           - npm
 
+- name: Create new linux user for node app
+  hosts: 64.226.107.81
+  tasks:
+    - name: Create linux user
+      ansible.builtin.user:
+        name: alfred
+        comment: Node User
+        group: admin
+
 - name: Deploy nodejs app
   hosts: 64.226.107.81
+  become: True
+  become_user: alfred
   tasks:
     - name: Unpack the nodejs file
       ansible.builtin.unarchive:
         src: /Users/alfredamoah/IdeaProjects/simple-nodejs/nodejs-app-1.0.0.tgz
-        dest: /root/
+        dest: /home/alfred
     - name: Install dependencies
       community.general.npm:
-        path: /root/package
+        path: /home/alfred/package
     - name: Start the application
       ansible.builtin.command:
-        chdir: /root/package/app
+        chdir: /home/alfred/package/app
         cmd: node server
       async: 1000
       poll: 0
