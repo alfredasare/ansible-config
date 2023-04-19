@@ -90,4 +90,3 @@
       ansible.builtin.shell: netstat -plnt
       register: app_status
     - ansible.builtin.debug: msg={{app_status.stdout_lines}}
-
