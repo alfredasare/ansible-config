@@ -23,6 +23,11 @@
       ansible.builtin.systemd:
         name: docker
         state: started
+    - name: Install docker python module
+      ansible.builtin.pip:
+        name:
+          - docker
+          - docker-compose
 
 - name: Add ec2-user to docker group
   hosts: docker_server
@@ -35,3 +40,11 @@
         append: yes
     - name: Reconnect to server session
       ansible.builtin.meta: reset_connection
+
+- name: Test docker pull
+  hosts: docker_server
+  tasks:
+    - name: Pull redis
+      community.docker.docker_image:
+        name: redis
+        source: pull
