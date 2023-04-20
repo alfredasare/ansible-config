@@ -1,22 +1,22 @@
 ---
-- name: Wait for ssh connection
-  hosts: all
-  gather_facts: False
-  tasks:
-    - name: Ensure ssh port open
-      ansible.builtin.wait_for:
-        port: 22
-        delay: 10
-        timeout: 100
-        search_regex: OpenSSH
-        host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
-      vars:
-        ansible_connection: local
+#- name: Wait for ssh connection
+#  hosts: all
+#  gather_facts: False
+#  tasks:
+#    - name: Ensure ssh port open
+#      ansible.builtin.wait_for:
+#        port: 22
+#        delay: 10
+#        timeout: 100
+#        search_regex: OpenSSH
+#        host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+#      vars:
+#        ansible_connection: local
 #        ansible_python_interpreter: /usr/bin/python
 
 
 - name: Install python3, docker, docker-compose
-  hosts: all
+  hosts: aws_ec2
   become: yes
   gather_facts: False
   tasks:
@@ -48,7 +48,7 @@
 
 
 - name: Create new linux user
-  hosts: all
+  hosts: aws_ec2
   become: yes
   tasks:
     - name: Create new linux user
@@ -58,7 +58,7 @@
 
 
 - name: Start docker containers
-  hosts: all
+  hosts: aws_ec2
   become: yes
   become_user: alfred
   vars_files:
