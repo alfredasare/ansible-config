@@ -7,10 +7,10 @@
         name: my-app
         api_version: v1
         kind: Namespace
-        state: present
+        state: absent
 #        kubeconfig: /path/to/kubeconfigfile
     - name: Deploy nginx app
       kubernetes.core.k8s:
         src: /Users/alfredamoah/GolandProjects/ansible-learn/k8s/nginx-config.yaml
-        state: present
+        state: absent
         namespace: my-app
